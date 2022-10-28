@@ -26,11 +26,13 @@ contract EulerETokenMock is IEulerEToken, ERC20("EulerETokenMock", "eMOCK", 18) 
     }
 
     function deposit(uint256, uint256 amount) external override {
+        uint shares = convertToShares(amount);
+
         // call EulerMock to transfer tokens from sender
         euler.transferTokenFrom(underlying, msg.sender, address(this), amount);
 
         // mint shares
-        _mint(msg.sender, convertToShares(amount));
+        _mint(msg.sender, shares);
     }
 
     function withdraw(uint256, uint256 amount) external override {
